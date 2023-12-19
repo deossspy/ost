@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script>
+        document.addEventListener('contextmenu', function (e) {
+            e.preventDefault();
+        });
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ostkrokar.simulator</title>
+    <link rel="icon" href="ost.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap">
+    <style>
+        body {
+            background-color: rgb(20, 20, 20);
+            overflow: hidden;
+            /* Hide overflow to prevent scrollbars */
+            position: relative;
+        }
+
+        .ost,
+        .iconcheese {
+            width: 18vh;
+            height: 18vh;
+            position: absolute;
+            animation: fall 0.45s linear;
+            /* Adjust animation duration */
+        }
+
+        @keyframes fall {
+            from {
+                transform: translateY(-100vh);
+                /* Start from above the viewport */
+            }
+
+            to {
+                transform: translateY(calc(18vh - 18vh));
+                /* Pile up at the bottom */
+            }
+        }
+
+        #sidebar {
+            position: fixed;
+            top: 0;
+            right: -249px;
+            /* Initially hidden */
+            width: 250px;
+            height: 100vh;
+            background-color: #202020;
+            color: white;
+            transition: 0.3s ease;
+            overflow: hidden;
+            padding-top: 20px;
+            box-shadow: 0 0 20px rgba(151, 151, 151, 0.2);
+            /* Glow effect */
+        }
+
+        #sidebar a {
+            text-decoration: none;
+            color: white;
+            display: block;
+            padding: 15px;
+            transition: 0.3s;
+        }
+
+        #sidebar a:hover {
+            background-color: #555;
+        }
+
+        .iconcheese {
+            width: 194px;
+            height: 162px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <img src="logo.png">
+    <center>
+        <p style="font-family: 'Poppins'; font-weight: 700; color: #ffcc04;" id="amountOfOst">0</p>
+        <p style="font-family: 'Poppins'; font-weight: 700; color: #ffcc04;">ost</p>
+    </center>
+
+    <div id="sidebar">
+        <img src="smaller-logo.png" style="margin-left: 1px;">
+        <p style="font-family: 'Poppins'; font-weight: 700; color: #ffcc04; margin-left: 1px;" id="cps">0 FPS</p>
+        <a href="#">Link 1</a>
+        <a href="#">Link 2</a>
+        <a href="#">Link 3</a>
+        <!-- Add more links as needed -->
+    </div>
+
+    <script>
+        var count = parseInt(localStorage.getItem('ostCount')) || 0;
+        var clicks = 0;
+        var cps = 0;
+        var lastClickTime = new Date().getTime();
+
+        
+        document.getElementById('amountOfOst').textContent = count;
+
+        document.addEventListener("keyup", function (event) {
+            if (event.code === 'Space') {
+                createOst();
+                updateCount();
+            }
+        });
+
+        function createOst() {
+            var ostImg = document.createElement("img");
+
+            
+            var chances = {
+                "ost.png": 99.99,
+                "cheese.png": 0.01
+                
+            };
+
+            
+            var selectedImage = getRandomWeighted(chances);
+
+            // Check if it should spawn
+            if (selectedImage !== null) {
+                ostImg.src = selectedImage;
+                ostImg.classList.add(selectedImage === "cheese.png" ? "iconcheese" : "ost");
+
+                // Set random horizontal position
+                ostImg.style.left = Math.random() * (window.innerWidth - 18) + 'px';
+
+                document.body.appendChild(ostImg);
+
+                // Trigger the animation by setting the initial top position to 0
+                setTimeout(function () {
+                    ostImg.style.top = 'calc(100vh - 18vh)';
+                }, 0);
+
+                // Check if the bottom is reached
+                setTimeout(function () {
+                    var ostBottom = ostImg.getBoundingClientRect().bottom;
+                    if (ostBottom >= window.innerHeight) {
+                        // Lock the element in place after the animation completes
+                        ostImg.style.animation = 'none';
+                        ostImg.style.top = 'calc(100vh - 18vh)';
+                    }
+                }, 2000); // Adjust the timeout based on your animation duration
+
+                count++;
+                localStorage.setItem('ostCount', count);
+            }
+        }
+
+        function updateCount() {
+            document.getElementById('amountOfOst').textContent = count;
+        }
+
+        function updateCPS() {
+            clicks++;
+            var currentTime = new Date().getTime();
+            var elapsedTime = (currentTime - lastClickTime) / 1000; // Convert to seconds
+
+            if (elapsedTime >= 0.3) {
+                cps = clicks / elapsedTime;
+                document.getElementById('cps').textContent = cps.toFixed(2) + ' FPS';
+                clicks = 0;
+                lastClickTime = currentTime;
+            }
+        }
+
+        // Update CPS every 0.01 seconds
+        setInterval(updateCPS, 1);
+
+        // Sidebar functionality
+        var sidebar = document.getElementById('sidebar');
+        var isSidebarOpen = false;
+
+        sidebar.addEventListener('mouseenter', function () {
+            if (!isSidebarOpen) {
+                sidebar.style.right = '0';
+                isSidebarOpen = true;
+            }
+        });
+
+        sidebar.addEventListener('mouseleave', function () {
+            if (isSidebarOpen) {
+                sidebar.style.right = '-249px';
+                isSidebarOpen = false;
+            }
+        });
+
+        // Function to get a random item based on weighted chances
+        function getRandomWeighted(obj) {
+            var totalWeight = 0;
+            for (var key in obj) {
+                totalWeight += obj[key];
+            }
+
+            var random = Math.random() * totalWeight;
+
+            for (var key in obj) {
+                random -= obj[key];
+                if (random <= 0) {
+                    return key;
+                }
+            }
+
+            // In case of rounding errors
+            return null;
+        }
+    </script>
+
+</body>
+
+</html>
