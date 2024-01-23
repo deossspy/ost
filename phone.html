@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iPhone 15 Pro Max - Apple</title>
+    <link rel="icon" href="apple.png" type="image/x-icon">
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(to bottom, #1c0030, #210038);
+            opacity: 0; /* Initially set opacity to 0 for fade-in effect */
+            animation: fadeInAndZoom 0.86736s ease-in-out forwards; /* Animation for fade-in and zoom */
+        }
+
+        @keyframes fadeInAndZoom {
+            0% {
+                opacity: 0;
+                transform: scale(0.5); /* Initial scale */
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1); /* Final scale */
+            }
+        }
+
+        .case {
+            position: fixed;
+            height: 614px;
+            width: 300px;
+            background-color: black;
+            border-radius: 46px;
+            overflow: hidden; /* To ensure the border-radius applies to the image */
+        }
+
+        .main-container {
+            position: relative;
+            height: 603px;
+            width: 289px;
+            margin-top: 5px;
+            background-color: rgb(255, 0, 0);
+            border-radius: 46px;
+            overflow: hidden; /* To ensure the border-radius applies to the image */
+        }
+
+        .main-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Maintain aspect ratio and cover the container */
+        }
+
+        .dynamic-island-container {
+            position: absolute;
+            top: 1vh;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50%;
+            transition-duration: 0.33s;
+            background-color: red;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .dynamic-island {
+            border-radius: 60px;
+            background-color: rgb(5, 5, 5);
+            height: 27.5px;
+            width: 76%;
+            transition-duration: 0.33s;
+        }
+
+        .dynamic-island-container:hover {
+            width: 50%;
+        }
+
+        .dynamic-island-container:hover .dynamic-island {
+            height: 100px;
+            border-radius: 50px;
+            width: 90%;
+        }
+
+        .camera {
+            height: 20px;
+            width: 20px;
+            border-radius: 20vh;
+            background-color: rgb(10, 10, 10);
+            position: absolute;
+            right: 15px; /* Adjust the margin as needed */
+        }
+
+        .dynamic-island-container:hover .camera {
+            background-color: transparent;
+            height: 0px;
+            width: 0px;
+        }
+
+        .download-image {
+            width: 10px; /* Adjust the width as needed */
+            height: 10px;
+            margin-right: 15px; /* Adjust the margin as needed */
+        }
+
+        .bottom-container {
+            position: absolute;
+            bottom: 0px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 38%;
+            transition-duration: 0.25s;
+        }
+
+        .bottom {
+            border-radius: 60px;
+            background-color: rgb(255, 255, 255);
+            height: 5px;
+            cursor: pointer;
+        }
+
+        .bottomthing {
+            bottom: 8px;
+            background-color: transparent;
+            position: absolute;
+            bottom: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 38%;
+            transition-duration: 0.1s;
+            width: 100%;
+            height: 30px;
+        }
+
+        .bottomthing:hover {
+            bottom: 10px;
+        }
+
+        .loading-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 1;
+            z-index: 9999;
+        }
+
+        .loading-spinner {
+            border: 16px solid #f3f3f3;
+            border-top: 16px solid #3498db;
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="loading-container">
+        <img src="loading.gif" style="width: 3vh; height: 3vh;">
+    </div>
+    <div class="case" style="display: block;">
+        <center>
+            <div class="main-container">
+                <img src="phone-background-image.jpg" alt="Phone Background" />
+
+                <div style="background-color: #3498db; width: 100%; height: 30px;">
+                    <div class="dynamic-island-container">
+                        <div class="dynamic-island"></div>
+                    </div>
+                </div>
+
+                <div class="bottomthing">
+                    <div class="bottom-container">
+                        <div class="bottom"></div>
+                    </div>
+                </div>
+            </div>
+        </center>
+    </div>
+
+    <script>
+        setTimeout(function() {
+            document.querySelector('.loading-container').style.display = 'none';
+            document.querySelector('.case').style.display = 'block';
+        }, 5000);
+    </script>
+</body>
+</html>

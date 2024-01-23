@@ -17,8 +17,8 @@
         body {
             background-color: rgb(20, 20, 20);
             overflow: hidden;
-            /* Hide overflow to prevent scrollbars */
             position: relative;
+            transition: background-color 0.8s ease;
         }
 
         .ost,
@@ -33,12 +33,10 @@
         @keyframes fall {
             from {
                 transform: translateY(-100vh);
-                /* Start from above the viewport */
             }
 
             to {
                 transform: translateY(calc(18vh - 18vh));
-                /* Pile up at the bottom */
             }
         }
 
@@ -46,7 +44,6 @@
             position: fixed;
             top: 0;
             right: -249px;
-            /* Initially hidden */
             width: 250px;
             height: 100vh;
             background-color: #202020;
@@ -55,18 +52,25 @@
             overflow: hidden;
             padding-top: 20px;
             box-shadow: 0 0 20px rgba(151, 151, 151, 0.2);
-            /* Glow effect */
+
         }
 
-        #sidebar a {
-            text-decoration: none;
-            color: white;
-            display: block;
-            padding: 15px;
+        #sidebar button {
+            background-color: transparent;
+            border: 0;
+            font-size: 18px;
+            font-weight: 700;
+            width: 100%;
+            height: 60px;
+            color: rgb(255, 255, 255);
             transition: 0.3s;
+            position: absolute;
+            bottom: 0;
+            margin-bottom: 3vh;
+            cursor: pointer;
         }
 
-        #sidebar a:hover {
+        #sidebar button:hover {
             background-color: #555;
         }
 
@@ -74,34 +78,410 @@
             width: 194px;
             height: 162px;
         }
+
+        .small {
+            width: 52px;
+            height: 62px;
+            margin-top: 1.23vh;
+        }
+
+        #popdown {
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100%);
+            background-color: rgb(20, 20, 20);
+            padding: 20px;
+            border-radius: 8px;
+            display: none;
+            text-align: center;
+            transition: transform 0.5s ease;
+        }
+
+        #popdown.show {
+            transform: translateX(-50%) translateY(4%);
+        }
+
+        #popdown img {
+            width: 10vh;
+            height: 14vh;
+        }
+        
+
+        #popdown2 {
+            position: fixed;
+            top: 10%;
+            transform: translateX(-150%) translateY(0%);
+            background-color: rgb(29, 29, 29);
+            padding: 20px;
+            border-radius: 8px;
+            display: block;
+            border: none;
+            text-align: center;
+            transition: transform 0.8s ease, background-color 0.8s ease, box-shadow 1s ease;;            
+            width: 28vh;
+            height: 20vh;
+        }
+
+        #popdown2.show {
+            transform: translateX(0%) translateY(0%);
+        }
+
+        #popdown2 img {
+            width: 100px;
+            height: 140px;
+        }
+        
+        #golden-button {
+            border-radius: 20%;
+            width: 8    .2vh;
+            height: 4.2vh;
+            border: 0;
+            color: white;
+            background-color: #202020;
+            box-shadow: 0 0 10px 5px #ffffff1e;
+            animation: spin 10s linear infinite;
+        }
+        .sidebar-button {
+            width: max-content;
+            height: 4.1vh;
+            background-color: transparent;
+            border: 0;
+            border-color: #ffffff93;
+            color: #ffcc04;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 10px;
+            transition-duration: 0.155s;
+            display: flex;
+            align-items: center;
+            font-family: 'Poppins';
+            font-weight: 700;
+        }
+
+        .sidebar-button:hover {
+            background-color: #0000001a;
+        }
+
+        select {
+      padding: 5px;
+    }
+
+    #dropdown {
+      margin-top: 2vh;
+      border: 0;
+      outline: 0;
+      border-radius: 8px;
+      transition-duration: 0.5s;
+      overflow: hidden; /* Ensure hidden overflow for smooth transition */
+    }
+
+    #dropdown.active {
+      max-height: 200px; /* Adjust the max-height based on your content */
+      background-color: #1c1c1c;
+    }
+
+    .light-mode{
+        background-color: #fff;
+    }
+
     </style>
 </head>
-
 <body>
+    <audio id="popSound" src="sound.mp3"></audio>
+    <audio id="popSound1" src="pop.mp3"></audio>
+    <audio id="hoverSound" src="hover.mp3"></audio>
+    <div>
+        <script>
+            document.addEventListener("keyup", function (event) {
+                if (event.code === 'Space') {
+                    playPopSound();
+                }
+            });
+        
+            function playPopSound() {
+                var popSound = new Audio('pop.mp3');
+                popSound.play();
+            }
+        </script>
+    
+    <script>
+        // <a href="krokar.html"><img src="logo.png"></a>
+    </script>
+    
+    
 
-    <img src="logo.png">
     <center>
-        <p style="font-family: 'Poppins'; font-weight: 700; color: #ffcc04;" id="amountOfOst">0</p>
-        <p style="font-family: 'Poppins'; font-weight: 700; color: #ffcc04;">ost</p>
-    </center>
+        
+        <div style="display: flex; flex-direction: column;">
 
+            <div style="display: flex; flex-direction: column; align-items: flex-start; margin-top: -10px;">
+                <div style="display: flex; gap: 5px;">
+                    <button class="sidebar-button" onmouseover="playHoverSound()" onclick="window.location.href='chatbot.html'">OST-GPT AI</button>
+                    <button class="sidebar-button" onmouseover="playHoverSound()" onclick="changeTheme()" id="switchButton">LIGHT MODE</button>  
+                    <button class="sidebar-button" onmouseover="playHoverSound()" onclick="cheatCodes()" id="cheatCodesButton">CHEAT CODES</button>                 
+                </div>
+                <p style="font-family: 'Poppins'; font-weight: 700; font-size: 30px; margin-top: 0px; color: #ffcc04;">ostkrokar.simulator</p>
+                
+            </div>
+            <div id="popdown2">
+                <center><input type="text"id="input33" placeholder="enter cheat code" style="transition: transform 0.8s ease, background-color 0.8s ease, box-shadow 1s ease;;width: 100%; height: 3.55vh; border-radius: 4px; border: 0; outline: 0; margin-top: 0vh; font-family: 'Poppins'; font-weight: 300; color: #ffcc04; background-color: #222222; box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);"></center>
+                <center><button class="sidebar-button" style="background-color: #ffcc04; color: rgba(255, 0, 0, 0.39); margin-top: 10vh;" id="enter">enter</button></center>
+            </div>
+        
+        </div>
+        <script>
+            function playHoverSound() {
+                var hoverSound = document.getElementById('hoverSound');
+                hoverSound.play();
+            }
+            document.getElementById('cheatCodesButton').addEventListener('click', function () {
+    var popdown2 = document.getElementById('popdown2');
+    popdown2.classList.toggle('show');
+});
+
+        </script>
+        
+            
+            
+            
+            
+<!-- Add this script to your HTML file -->
+<script>
+    var codes = {
+        "DevTest123": {
+            action: "addOst",
+            reward: 1200
+        },
+        "WebsiteTest": {
+            action: "redirectWebsite",
+            reward: "https://example.com"
+        },
+        "deoCode": {
+            action: "addOst",
+            reward: 12000000
+        },
+        "penis": {
+            action: "addOst",
+            reward: 12000000
+        },
+    };
+
+    // Function to apply cheat codes
+    function applyCheatCode() {
+        const cheatCodeInput = document.getElementById('input33');
+        const enteredCode = cheatCodeInput.value;
+
+        if (enteredCode && codes.hasOwnProperty(enteredCode)) {
+            const codeDetails = codes[enteredCode];
+
+            // Check if the code has already been used
+            if (!isCodeUsed(enteredCode)) {
+                // Perform the associated action based on the cheat code
+                switch (codeDetails.action) {
+    case "addOst":
+        // Change the box shadow to green
+        const input34 = document.getElementById('input33');
+        input34.style.boxShadow = '0 0 5px #22aa22';
+        input34.placeholder = 'success!';
+        setTimeout(function () {
+            input34.style.color = '#ffcc04';
+            input34.placeholder = 'enter cheat code';
+            input34.style.boxShadow = '0 0 5px rgba(255, 255, 255, 0.5)';
+
+    }, 2000);
+        addOst(codeDetails.reward);
+        break;
+    case "redirectWebsite":
+        window.location.href = codeDetails.reward;
+                // Change the box shadow to green
+                input34.style.boxShadow = '0 0 5px #22aa22';
+        input34.placeholder = 'success!';
+        setTimeout(function () {
+            input34.style.color = '#ffcc04';
+            input34.placeholder = 'enter cheat code';
+            input34.style.boxShadow = '0 0 5px rgba(255, 255, 255, 0.5)';
+
+    }, 2000);
+        break;
+                    default:
+                    const input33 = document.getElementById('input33');
+    input33.style.color = 'red';
+    input33.placeholder = 'invalid code';
+    input33.style.boxShadow = '0 0 5px #aa2222';
+    setTimeout(function () {
+        input33.style.color = '#ffcc04';
+        input33.placeholder = 'enter cheat code';
+        input33.style.boxShadow = '0 0 5px rgba(255, 255, 255, 0.5)';
+
+    }, 2000);
+                }
+
+                // Mark the code as used
+                markCodeAsUsed(enteredCode);
+} else {
+    const input33 = document.getElementById('input33');
+    input33.style.color = 'red';
+    input33.placeholder = 'already used';
+    input33.style.boxShadow = '0 0 5px #aa2222';
+    setTimeout(function () {
+        input33.style.color = '#ffcc04';
+        input33.placeholder = 'enter cheat code';
+        input33.style.boxShadow = '0 0 5px rgba(255, 255, 255, 0.5)';
+
+    }, 2000);
+}
+        } else {
+            const input33 = document.getElementById('input33');
+    input33.style.color = 'red';
+    input33.placeholder = 'invalid code';
+    input33.style.boxShadow = '0 0 5px #aa2222';
+    setTimeout(function () {
+        input33.style.color = '#ffcc04';
+        input33.placeholder = 'enter cheat code';
+        input33.style.boxShadow = '0 0 5px rgba(255, 255, 255, 0.5)';
+
+    }, 2000);
+        }
+
+        // Clear the input field after processing the cheat code
+        cheatCodeInput.value = '';
+    }
+
+    // Function to add ost based on the reward
+    function addOst(reward) {
+        var count = parseInt(localStorage.getItem('ostCount')) || 0;
+        count += reward;
+        localStorage.setItem('ostCount', count);
+        document.getElementById('amountOfOst').textContent = count;
+    }
+
+    // Function to check if the code has been used
+    function isCodeUsed(code) {
+        return localStorage.getItem(code + "_Used") === "true";
+    }
+
+    // Function to mark the code as used
+    function markCodeAsUsed(code) {
+        localStorage.setItem(code + "_Used", "true");
+    }
+
+    // Add an event listener to the "Enter" button
+    document.getElementById('enter').addEventListener('click', applyCheatCode);
+</script>
+
+            
+
+    
+        <script>
+            function changeTheme() {
+    const switchButton = document.getElementById('switchButton');
+    const popdown2 = document.getElementById('popdown2');
+    const input33 = document.getElementById('input33');
+    const body = document.body;
+    const sidebar2 = document.getElementById('sidebar');
+    const frameBar1 = document.getElementById('frameBar1');
+    const frameBar2 = document.getElementById('frameBar2');
+    const frameBar3 = document.getElementById('frameBar3');
+    body.classList.toggle('light-mode');
+    const isLightMode = body.classList.contains('light-mode');
+    localStorage.setItem('themeMode', isLightMode ? 'light' : 'dark');
+    if (isLightMode) {
+        switchButton.textContent = "DARK MODE";
+        sidebar2.style.backgroundColor = '#ffffff';
+        sidebar2.style.boxShadow = '0 0 20px rgba(0, 0, 0, 0.25)';
+        frameBar1.style.backgroundColor = '#202020';
+        frameBar2.style.backgroundColor = '#202020';
+        frameBar3.style.backgroundColor = '#202020';
+        popdown2.style.backgroundColor = '#ffffff';
+        popdown2.style.boxShadow = '0 0 20px rgba(111, 111, 111, 1)';
+        input33.style.backgroundColor = '#ffffff';
+    } else {
+        switchButton.textContent = "LIGHT MODE";
+        sidebar2.style.backgroundColor = '#202020';
+        sidebar2.style.boxShadow = '0 0 20px rgba(151, 151, 151, 0.2)';
+        frameBar1.style.backgroundColor = '#ffffff';
+        frameBar2.style.backgroundColor = '#ffffff';
+        frameBar3.style.backgroundColor = '#ffffff';
+        popdown2.style.boxShadow = '0 0 0px rgba(0, 0, 0, 0)';
+        popdown2.style.backgroundColor = 'rgb(29, 29, 29)';
+        input33.style.backgroundColor = 'rgb(29, 29, 29)';
+    }
+}
+        </script>
+        <img src="ost.png" style="width: 1.4vh; height: 1.4vh;">
+            <p style="font-family: 'Poppins'; font-weight: 700; color: #ffcc04;" id="amountOfOst">0</p>
+            <p style="font-family: 'Poppins'; font-weight: 700; color: #ffcc04;">ost</p>
+    
+            <div id="cookieButton" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); font-family: 'Poppins'; font-weight: 700; background-color: #ffcc04; color: #202020; padding: 10px 20px; border-radius: 5px; cursor: pointer; z-index: 100;">
+                click for ost
+            </div>
+    
+        </div>
+    </center>
     <div id="sidebar">
-        <img src="smaller-logo.png" style="margin-left: 1px;">
-        <p style="font-family: 'Poppins'; font-weight: 700; color: #ffcc04; margin-left: 1px;" id="cps">0 FPS</p>
-        <a href="#">Link 1</a>
-        <a href="#">Link 2</a>
-        <a href="#">Link 3</a>
-        <!-- Add more links as needed -->
+        <center><img src="smaller-logo.png" style="margin-left: 1px;"></center>
+        <center><p style="font-family: 'Poppins'; font-weight: 700; color: #ffcc04; margin-left: 1px;" id="cps">0 FPS</p>
+        </center>
+        <center>
+        <div style="width: 85%; background-color: white; height: 2px; border-radius: 12px; opacity: 1;" id="frameBar1"></div>
+        </center>
+        <center><p style="font-family: 'Poppins'; font-weight: 700; color: #ffcc04;" id="cheesebags">cheese bags</p></center>
+        <center><img src="doodles.png" class="small"></center>
+        <center><p style="font-family: 'Poppins'; font-weight: 700; color: #ffcc04;" id="amountOfBags">0</p></center>
+        <center><p style="font-family: 'Poppins'; font-weight: 700; color: #ffcc04;" id="cheesebags">cheese bags</p></center>
+        <center>
+            <div style="width: 85%; background-color: white; height: 2px; border-radius: 12px; opacity: 1;" id="frameBar2"></div>
+            </center>
+            <center><p style="font-family: 'Poppins'; font-weight: 700; color: #ffcc04;" id="">all time ost</p></center>
+            <center><p style="font-family: 'Poppins'; font-weight: 700; color: #ffcc04;" id="amountOfOst1">0</p></center>
+            <center><div style="width: 85%; background-color: white; height: 2px; border-radius: 12px; opacity: 1;" id="frameBar3"></div></center>
+        <button class="bullshitbutton" style="color: red; display: none;" id="setPassword">set a password before u can reset!</button>
+        <center><input type="password" id="passwordInput" style="display: none; border-radius: 4px; border: 0; height: 20px; outline: 0; width: 20vh; height: 3.55vh; margin-top: 10vh; font-size: 1rem; font-family: 'Poppins'; font-weight: 300; color: #ffcc04; background-color: #484848;" placeholder="enter password"></center>
+        <button id="confirmPassword" style="display: none;">confirm</button>
+        <button class="bullshitbutton" style="color: red; display: none;" id="reset">reset data</button>
+    </div>
+    <div id="popdown">
+        <img src="doodles.png">
+        <p style="font-family: 'Poppins'; font-weight: 700; color: #cda401;">+1</p>
     </div>
 
+
+    
+
+
     <script>
+function isMobileDevice() {
+            return (typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1);
+        }
+        if (isMobileDevice()) {
+            document.getElementById('cookieButton').style.display = 'block';
+        }
+
+        var clickCounter = 0;
+function getCookieValue() {
+    var cookieValue = localStorage.getItem('resetPassword');
+    var ostCount = parseInt(localStorage.getItem('ostCount')) || 0;
+    ostCount++;
+    localStorage.setItem('ostCount', ostCount);
+    document.getElementById('amountOfOst').textContent = ostCount;
+}
+
+document.getElementById('cookieButton').addEventListener('click', getCookieValue);
+
+
+
         var count = parseInt(localStorage.getItem('ostCount')) || 0;
         var clicks = 0;
         var cps = 0;
         var lastClickTime = new Date().getTime();
+        var bagsCount = parseInt(localStorage.getItem('amountOfBags')) || 0;
+        var allTimeOstCount = parseInt(localStorage.getItem('allTimeOstCount')) || 0;
+        var storedPassword = localStorage.getItem('resetPassword');
 
-        
         document.getElementById('amountOfOst').textContent = count;
+        document.getElementById('amountOfBags').textContent = bagsCount;
+        document.getElementById('amountOfOst1').textContent = allTimeOstCount;
 
         document.addEventListener("keyup", function (event) {
             if (event.code === 'Space') {
@@ -113,43 +493,65 @@
         function createOst() {
             var ostImg = document.createElement("img");
 
-            
             var chances = {
-                "ost.png": 99.99,
-                "cheese.png": 0.01
-                
+                "ost.png": 100,
+                "cheese.png": 0
             };
 
-            
             var selectedImage = getRandomWeighted(chances);
 
-            // Check if it should spawn
             if (selectedImage !== null) {
                 ostImg.src = selectedImage;
                 ostImg.classList.add(selectedImage === "cheese.png" ? "iconcheese" : "ost");
 
-                // Set random horizontal position
                 ostImg.style.left = Math.random() * (window.innerWidth - 18) + 'px';
 
                 document.body.appendChild(ostImg);
 
-                // Trigger the animation by setting the initial top position to 0
+
                 setTimeout(function () {
                     ostImg.style.top = 'calc(100vh - 18vh)';
                 }, 0);
 
-                // Check if the bottom is reached
+
                 setTimeout(function () {
                     var ostBottom = ostImg.getBoundingClientRect().bottom;
                     if (ostBottom >= window.innerHeight) {
-                        // Lock the element in place after the animation completes
+
                         ostImg.style.animation = 'none';
                         ostImg.style.top = 'calc(100vh - 18vh)';
                     }
-                }, 2000); // Adjust the timeout based on your animation duration
+                }, 2000);
+
+
+
+                
+
+var allTimeOstCountExtra = localStorage.getItem('allTimeOstCountExtra');
+
+var allTimeOstCount = parseInt(localStorage.getItem('allTimeOstCount')) || 0;
+allTimeOstCount += 1;
+allTimeOstCountExtra = allTimeOstCount + 1;
+localStorage.setItem('allTimeOstCount', allTimeOstCount);
+localStorage.setItem('allTimeOstCountExtra', allTimeOstCountExtra);
+document.getElementById('amountOfOst1').textContent = localStorage.getItem('allTimeOstCount');
+
+
+
 
                 count++;
                 localStorage.setItem('ostCount', count);
+
+
+                if (count % 84 === 0) {
+
+                    bagsCount++;
+                    document.getElementById('amountOfBags').textContent = bagsCount;
+                    localStorage.setItem('amountOfBags', bagsCount);
+
+
+                    showPopdown();
+                }
             }
         }
 
@@ -157,10 +559,41 @@
             document.getElementById('amountOfOst').textContent = count;
         }
 
+        function showPopdown() {
+
+            var popdown = document.getElementById('popdown');
+            popdown.style.display = 'block';
+
+
+            var popSound = document.getElementById('popSound');
+            popSound.play();
+
+            void popdown.offsetWidth;
+
+            popdown.classList.add('show');
+
+
+            setTimeout(function () {
+
+                popdown.classList.remove('show');
+
+
+                setTimeout(function () {
+                    popdown.style.display = 'none';
+                }, 500);
+            }, 2000);
+
+
+            var ostElements = document.querySelectorAll('.ost');
+            ostElements.forEach(function (element) {
+                element.parentNode.removeChild(element);
+            });
+        }
+
         function updateCPS() {
             clicks++;
             var currentTime = new Date().getTime();
-            var elapsedTime = (currentTime - lastClickTime) / 1000; // Convert to seconds
+            var elapsedTime = (currentTime - lastClickTime) / 1000;
 
             if (elapsedTime >= 0.3) {
                 cps = clicks / elapsedTime;
@@ -170,10 +603,10 @@
             }
         }
 
-        // Update CPS every 0.01 seconds
+
         setInterval(updateCPS, 1);
 
-        // Sidebar functionality
+
         var sidebar = document.getElementById('sidebar');
         var isSidebarOpen = false;
 
@@ -191,7 +624,7 @@
             }
         });
 
-        // Function to get a random item based on weighted chances
+
         function getRandomWeighted(obj) {
             var totalWeight = 0;
             for (var key in obj) {
@@ -207,9 +640,53 @@
                 }
             }
 
-            // In case of rounding errors
+
             return null;
         }
+
+        window.addEventListener('load', function () {
+            count = parseInt(localStorage.getItem('ostCount')) || 0;
+            bagsCount = parseInt(localStorage.getItem('amountOfBags')) || 0;
+            allTimeOstCount = parseInt(localStorage.getItem('allTimeOstCount')) || 0;
+            allTimeOstCountExtra = parseInt(localStorage.getItem('allTimeOstCountExtra')) || 0;
+
+            document.getElementById('amountOfOst').textContent = count;
+            document.getElementById('amountOfBags').textContent = bagsCount;
+            document.getElementById('amountOfOst1').textContent = allTimeOstCount;
+        });
+
+
+        if (storedPassword) {
+            document.getElementById('reset').style.display = 'block';
+        } else {
+            document.getElementById('setPassword').style.display = 'block';
+        }
+
+        document.getElementById('setPassword').addEventListener('click', function () {
+            var newPassword = prompt("Set a new password:");
+            if (newPassword) {
+                localStorage.setItem('resetPassword', newPassword);
+                location.reload();
+            }
+        });
+
+        document.getElementById('reset').addEventListener('click', function () {
+            document.getElementById('passwordInput').style.display = 'block';
+            document.getElementById('confirmPassword').style.display = 'block';
+            document.getElementById('reset').style.display = 'none';
+        });
+
+        document.getElementById('confirmPassword').addEventListener('click', function () {
+            var enteredPassword = document.getElementById('passwordInput').value;
+            if (enteredPassword === storedPassword) {
+
+                localStorage.setItem('ostCount', 0);
+                localStorage.setItem('amountOfBags', 0);
+              window.location.href = 'clearData.html';
+            } else {
+                alert("incorrect password!");
+            }
+        });
     </script>
 
 </body>
